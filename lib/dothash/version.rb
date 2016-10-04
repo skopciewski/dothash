@@ -18,5 +18,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Dothash
-  VERSION = "0.0.0".freeze
+  VERSION = "1.0.0".freeze
 end
