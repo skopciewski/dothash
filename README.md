@@ -3,6 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/dothash.svg)](http://badge.fury.io/rb/dothash)
 [![Code Climate](https://codeclimate.com/github/skopciewski/dothash/badges/gpa.svg)](https://codeclimate.com/github/skopciewski/dothash)
 
+Hash to dot notation.
 
 ## Installation
 
@@ -19,6 +20,18 @@ Or install it yourself as:
     $ gem install dothash
 
 ## Usage
+
+```ruby
+require "dothash"
+hash = { x: { y: 1, z: { a1: 8, a2: 10 } }, v: [1, { y: 2, z: 3 }] }
+dhash = Dothash::Hash.convert hash
+
+puts dhash
+# {"x.y"=>1, "x.z.a1"=>8, "x.z.a2"=>10, "v.0"=>1, "v.1.y"=>2, "v.1.z"=>3}
+
+puts dh.class
+# Hash
+```
 
 ## Versioning
 

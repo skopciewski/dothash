@@ -17,8 +17,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require "dothash/version"
-require "dothash/hash"
-
 module Dothash
+  class Hash
+    def self.convert(hash, prefix = nil)
+      raise ArgumentError, "You should pass only Hash here" unless hash.is_a? ::Hash
+      hash.each_with_object({}) do |(key, value), memo|
+        new_key = [prefix, key].compact.join(".")
+        memo.merge! go_deep(value, new_key)
+      end
+    end
+
+    private_class_method def self.go_deep(value, new_key)
+      if value.is_a?(::Hash)
+        convert(value, new_key)
+      elsif value.is_a? ::Array
+        value.each_with_object({}).with_index do |(avalue, memo), index|
+          memo.merge! convert({ index => avalue }, new_key)
+        end
+      else
+        { new_key => value }
+      end
+    end
+  end
 end
