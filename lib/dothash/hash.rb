@@ -55,10 +55,8 @@ module Dothash
       merger = proc do |_key, v1, v2|
         if v1.is_a?(::Hash) && v2.is_a?(::Hash)
           v1.merge(v2, &merger)
-        elsif v1.is_a?(::Array) && v2.is_a?(::Array)
-          v1 | v2
         else
-          [:undefined, nil, :nil].include?(v2) ? v1 : v2
+          v2
         end
       end
       first.merge!(second.to_h, &merger)
