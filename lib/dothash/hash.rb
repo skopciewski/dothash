@@ -19,24 +19,49 @@
 
 module Dothash
   class Hash
-    def self.convert(hash, prefix = nil)
+    def self.with_dots(hash, prefix = nil)
       raise ArgumentError, "You should pass only Hash here" unless hash.is_a? ::Hash
       hash.each_with_object({}) do |(key, value), memo|
         new_key = [prefix, key].compact.join(".")
-        memo.merge! go_deep(value, new_key)
+        memo.merge! with_dots_deeper(value, new_key)
       end
     end
 
-    private_class_method def self.go_deep(value, new_key)
+    private_class_method def self.with_dots_deeper(value, new_key)
       if value.is_a?(::Hash)
-        convert(value, new_key)
+        with_dots(value, new_key)
       elsif value.is_a? ::Array
         value.each_with_object({}).with_index do |(avalue, memo), index|
-          memo.merge! convert({ index => avalue }, new_key)
+          memo.merge! with_dots({ index => avalue }, new_key)
         end
       else
         { new_key => value }
       end
+    end
+
+    def self.without_dots(hash)
+      hash.each_with_object({}) do |(key, value), memo|
+        key_parts = key.to_s.split(".")
+        new_key = key_parts.shift.to_sym
+        if key_parts.empty?
+          memo[new_key] = value
+        else
+          deep_merge!(memo, new_key => without_dots(key_parts.join(".") => value))
+        end
+      end
+    end
+
+    private_class_method def self.deep_merge!(first, second)
+      merger = proc do |_key, v1, v2|
+        if v1.is_a?(::Hash) && v2.is_a?(::Hash)
+          v1.merge(v2, &merger)
+        elsif v1.is_a?(::Array) && v2.is_a?(::Array)
+          v1 | v2
+        else
+          [:undefined, nil, :nil].include?(v2) ? v1 : v2
+        end
+      end
+      first.merge!(second.to_h, &merger)
     end
   end
 end

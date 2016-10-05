@@ -24,13 +24,18 @@ Or install it yourself as:
 ```ruby
 require "dothash"
 hash = { x: { y: 1, z: { a1: 8, a2: 10 } }, v: [1, { y: 2, z: 3 }] }
-dhash = Dothash::Hash.convert hash
+dhash = Dothash::Hash.with_dots hash
 
 puts dhash
 # {"x.y"=>1, "x.z.a1"=>8, "x.z.a2"=>10, "v.0"=>1, "v.1.y"=>2, "v.1.z"=>3}
 
 puts dh.class
 # Hash
+
+hash2 = Dothash::Hash.without_dots(dhash)
+
+puts hash2
+# {:x=>{:y=>1, :z=>{:a1=>8, :a2=>10}}, :v=>{:"0"=>1, :"1"=>{:y=>2, :z=>3}}}
 ```
 
 ## Versioning
