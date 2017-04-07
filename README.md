@@ -2,6 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/dothash.svg)](http://badge.fury.io/rb/dothash)
 [![Code Climate](https://codeclimate.com/github/skopciewski/dothash/badges/gpa.svg)](https://codeclimate.com/github/skopciewski/dothash)
+[![Dependency Status](https://gemnasium.com/badges/github.com/skopciewski/dothash.svg)](https://gemnasium.com/github.com/skopciewski/dothash)
 
 Hash to dot notation.
 
