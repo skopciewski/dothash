@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "test_helper"
 require "dothash/hash"
 
@@ -58,7 +59,7 @@ class HashTest < Minitest::Test
 
   def test_convert_dots_with_arrays
     dots = { "x.0" => 1, "x.1.y" => 2, "x.1.z" => 3 }
-    expected = { x: { :"0" => 1, :"1" => { y: 2, z: 3 } } }
+    expected = { x: { "0": 1, "1": { y: 2, z: 3 } } }
     assert_equal expected, Dothash::Hash.without_dots(dots)
   end
 end
