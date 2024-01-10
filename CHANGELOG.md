@@ -1,3 +1,8 @@
+### 2.1.0 (2024.01.10)
+
+* add one_based notation
+* gh actions
+
 ### 2.0.2 (2017.04.07)
 
 * fix travis integration
@@ -5,7 +10,7 @@
 
 ### 2.0.1 (2016.10.05)
 
-* remove unused code 
+* remove unused code
 
 ### 2.0.0 (2016.10.05)
 
