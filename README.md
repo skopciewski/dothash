@@ -58,3 +58,4 @@ See [semver.org][semver]
 5. Create new Pull Request
 
 [semver]: http://semver.org/
+
