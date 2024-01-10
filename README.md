@@ -30,8 +30,14 @@ dhash = Dothash::Hash.with_dots hash
 puts dhash
 # {"x.y"=>1, "x.z.a1"=>8, "x.z.a2"=>10, "v.0"=>1, "v.1.y"=>2, "v.1.z"=>3}
 
-puts dh.class
+puts dhash.class
 # Hash
+
+dhash_1 = Dothash::Hash.with_dots_one_based hash
+
+puts dhash
+# {"x.y"=>1, "x.z.a1"=>8, "x.z.a2"=>10, "v.1"=>1, "v.2.y"=>2, "v.2.z"=>3}
+
 
 hash2 = Dothash::Hash.without_dots(dhash)
 
