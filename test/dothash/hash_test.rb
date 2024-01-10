@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "test_helper"
 require "dothash/hash"
 
@@ -10,56 +11,62 @@ class HashTest < Minitest::Test
   end
 
   def test_simple_hash_to_dots
-    hash = { x: 1, "y" => "a" }
-    expected = { "x" => 1, "y" => "a" }
+    hash = {:x => 1, "y" => "a"}
+    expected = {"x" => 1, "y" => "a"}
     assert_equal expected, Dothash::Hash.with_dots(hash)
   end
 
   def test_nested_simple_values_to_dots
-    hash = { x: { y: 1, z: 2 } }
-    expected = { "x.y" => 1, "x.z" => 2 }
+    hash = {x: {y: 1, z: 2}}
+    expected = {"x.y" => 1, "x.z" => 2}
     assert_equal expected, Dothash::Hash.with_dots(hash)
   end
 
   def test_nested_more_complicated_values_to_dots
-    hash = { x: { y: 1, z: { a1: 8, a2: 10 } }, v: "foo" }
-    expected = { "x.y" => 1, "x.z.a1" => 8, "x.z.a2" => 10, "v" => "foo" }
+    hash = {x: {y: 1, z: {a1: 8, a2: 10}}, v: "foo"}
+    expected = {"x.y" => 1, "x.z.a1" => 8, "x.z.a2" => 10, "v" => "foo"}
     assert_equal expected, Dothash::Hash.with_dots(hash)
   end
 
   def test_convert_arrays_to_dots
-    hash = { x: [1, { y: 2, z: 3 }] }
-    expected = { "x.0" => 1, "x.1.y" => 2, "x.1.z" => 3 }
+    hash = {x: [1, {y: 2, z: 3}]}
+    expected = {"x.0" => 1, "x.1.y" => 2, "x.1.z" => 3}
     assert_equal expected, Dothash::Hash.with_dots(hash)
   end
 
+  def test_convert_arrays_to_dots_indexed_from_1
+    hash = {x: [1, {y: 2, z: 3}]}
+    expected = {"x.1" => 1, "x.2.y" => 2, "x.2.z" => 3}
+    assert_equal expected, Dothash::Hash.with_dots_one_based(hash)
+  end
+
   def test_hash_to_hash
-    dots = { :x => 1, "y" => "a" }
-    expected = { x: 1, y: "a" }
+    dots = {:x => 1, "y" => "a"}
+    expected = {x: 1, y: "a"}
     assert_equal expected, Dothash::Hash.without_dots(dots)
   end
 
   def test_simple_dots_to_hash
-    dots = { "x" => 1, "y" => "a" }
-    expected = { x: 1, y: "a" }
+    dots = {"x" => 1, "y" => "a"}
+    expected = {x: 1, y: "a"}
     assert_equal expected, Dothash::Hash.without_dots(dots)
   end
 
   def test_nested_simple_dots_to_hash
-    dots = { "x.y" => 1, "x.z" => 2 }
-    expected = { x: { y: 1, z: 2 } }
+    dots = {"x.y" => 1, "x.z" => 2}
+    expected = {x: {y: 1, z: 2}}
     assert_equal expected, Dothash::Hash.without_dots(dots)
   end
 
   def test_nested_more_complicated_dots_to_hash
-    dots = { "x.y" => 1, "x.z.a1" => 8, "x.z.a2" => 10, "v" => "foo" }
-    expected = { x: { y: 1, z: { a1: 8, a2: 10 } }, v: "foo" }
+    dots = {"x.y" => 1, "x.z.a1" => 8, "x.z.a2" => 10, "v" => "foo"}
+    expected = {x: {y: 1, z: {a1: 8, a2: 10}}, v: "foo"}
     assert_equal expected, Dothash::Hash.without_dots(dots)
   end
 
   def test_convert_dots_with_arrays
-    dots = { "x.0" => 1, "x.1.y" => 2, "x.1.z" => 3 }
-    expected = { x: { "0": 1, "1": { y: 2, z: 3 } } }
+    dots = {"x.0" => 1, "x.1.y" => 2, "x.1.z" => 3}
+    expected = {x: {"0": 1, "1": {y: 2, z: 3}}}
     assert_equal expected, Dothash::Hash.without_dots(dots)
   end
 end

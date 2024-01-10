@@ -1,3 +1,8 @@
+.env.local
+.tmuxp.yaml
+.tmuxinator.yml
+_share_
+coverage/
 *.gem
 *.rbc
 .bundle
@@ -12,3 +17,5 @@ rdoc
 spec/reports
 tmp
 vendor
+tags
+

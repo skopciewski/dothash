@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (C) 2016, 2017 Szymon Kopciewski
+# Copyright (C) 2016 - 2024 Szymon Kopciewski
 #
 # This file is part of Dothash.
 #
@@ -19,23 +19,28 @@
 
 module Dothash
   class Hash
-    def self.with_dots(hash, prefix = nil)
+    def self.with_dots(hash, prefix = nil, one_based = false)
       raise ArgumentError, "You should pass only Hash here" unless hash.is_a? ::Hash
       hash.each_with_object({}) do |(key, value), memo|
         new_key = [prefix, key].compact.join(".")
-        memo.merge! with_dots_deeper(value, new_key)
+        memo.merge! with_dots_deeper(value, new_key, one_based)
       end
     end
 
-    private_class_method def self.with_dots_deeper(value, new_key)
+    def self.with_dots_one_based(hash, prefix = nil)
+      with_dots hash, prefix, true
+    end
+
+    private_class_method def self.with_dots_deeper(value, new_key, one_based)
       if value.is_a?(::Hash)
-        with_dots(value, new_key)
+        with_dots(value, new_key, one_based)
       elsif value.is_a? ::Array
         value.each_with_object({}).with_index do |(avalue, memo), index|
-          memo.merge! with_dots({ index => avalue }, new_key)
+          new_index = one_based ? index + 1 : index
+          memo.merge! with_dots({new_index => avalue}, new_key, one_based)
         end
       else
-        { new_key => value }
+        {new_key => value}
       end
     end
 
